@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UX designer portfolio showcasing thoughtful, human-centered design work">
+    <title>UX Designer Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --text: #1a1a1a;
+            --bg: #fafafa;
+            --accent: #4a90e2;
+            --subtle: #e8e8e8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Visually hidden but accessible to screen readers */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Skip to main content link for keyboard users */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            z-index: 10000;
+        }
+
+        .skip-to-main:focus {
+            top: 0;
+        }
+
+        /* Improved focus visibility */
+        *:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 70%, transparent 100%);
+        }
+
+        nav {
+            padding: 2rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            position: relative;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        /* Main & Sections */
+        main {
+            position: relative;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Home */
+        #home {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .home-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .home-title .word {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        .home-title .word:nth-child(1) { animation-delay: 0.1s; }
+        .home-title .word:nth-child(2) { animation-delay: 0.3s; }
+        .home-title .word:nth-child(3) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        .home-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            font-weight: 300;
+        }
+
+        .floating-cursor {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: transform 0.15s, opacity 0.3s;
+        }
+
+        /* About */
+        #about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .about-visual {
+            height: 400px;
+            background: var(--subtle);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Case Studies */
+        #work h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            gap: 6rem;
+            margin-top: 4rem;
+        }
+
+        .case-study {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .case-study-link {
+            display: contents;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .case-study:hover {
+            transform: translateX(10px);
+        }
+
+        .case-study:nth-child(even) {
+            direction: rtl;
+        }
+
+        .case-study:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .case-image {
+            aspect-ratio: 4/3;
+            background: var(--subtle);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .case-study:hover .case-image::after {
+            opacity: 0.1;
+        }
+
+        .case-content h3 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .case-meta {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .case-content p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: var(--accent);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+
+        .case-study:hover .read-more {
+            transform: translateX(5px);
+        }
+
+        /* Thoughts */
+        #thoughts {
+            max-width: 800px;
+        }
+
+        #thoughts h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+
+        .thought-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--subtle);
+            cursor: pointer;
+            transition: padding-left 0.3s;
+        }
+
+        .thought-item:hover {
+            padding-left: 1rem;
+        }
+
+        .thought-item h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .thought-item .date {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .thought-item p {
+            color: #666;
+        }
+
+        /* Contact */
+        #contact {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        #contact h2 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: transform 0.3s, color 0.3s;
+            display: inline-block;
+        }
+
+        .contact-links a:hover {
+            transform: translateX(10px);
+            color: var(--accent);
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        @media (max-width: 768px) {
+            header nav {
+                padding: 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            section {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            #about {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .case-study,
+            .case-study:nth-child(even) {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+
+            .home-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Respect user motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to main content for keyboard users -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    
+    <!-- Scroll progress indicator -->
+    <div class="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    
+    <!-- Custom cursor (decorative only) -->
+    <div class="floating-cursor" aria-hidden="true"></div>
+
+    <header>
+        <nav aria-label="Main navigation">
+            <ul class="nav-links">
+                <li><a href="#home" class="active" aria-current="page">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#thoughts">Thoughts</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" aria-labelledby="home-heading">
+            <h1 id="home-heading" class="home-title">
+                <span class="word">Designing</span>
+                <span class="word">thoughtful</span>
+                <span class="word">experiences</span>
+            </h1>
+            <p class="home-subtitle">
+                I'm a UX designer who believes the best interfaces feel like conversations—intuitive, human, and surprisingly delightful.
+            </p>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" aria-labelledby="about-heading">
+            <div class="about-content">
+                <h2 id="about-heading">Hello, I'm here</h2>
+                <p>
+                    I approach design like solving a puzzle where the pieces are people, not pixels. My background in psychology helps me understand what users need before they know they need it.
+                </p>
+                <p>
+                    When I'm not designing, I'm probably overthinking the layout of everyday objects or trying to convince my friends that good design is invisible.
+                </p>
+            </div>
+            <div class="about-visual" style="background-image: url('images/about-image.jpg'); background-size: cover; background-position: center;"></div>
+        </section>
+
+        <!-- Case Studies Section -->
+        <section id="work" aria-labelledby="work-heading">
+            <h2 id="work-heading">Selected Work</h2>
+            
+            <div class="case-studies-grid">
+                <article class="case-study" aria-labelledby="case1-heading">
+                    <a href="case-study-loyalty.html" class="case-study-link" aria-label="Read full case study: When Your Loyalty Program Lives in Three Places">
+                        <div class="case-image" style="background-image: url('images/loyalty-screens.jpg'); background-size: cover; background-position: center;" role="img" aria-label="Fashion loyalty program interface across mobile and web"></div>
+                        <div class="case-content">
+                            <h3 id="case1-heading">When Your Loyalty Program Lives in Three Places</h3>
+                            <p class="case-meta">
+                                <span class="case-type">Omnichannel Loyalty · Global Fashion Retailer</span> · 
+                                <time datetime="2024">2024</time>
+                            </p>
+                            <p>
+                                The retailer had 20 million loyalty members scattered across mobile, web, and in-store systems that didn't talk to each other. Someone could earn points in a store but not see them on their phone. We couldn't just rebuild everything—we had to move millions of people to a new platform without anyone noticing. I mapped every touchpoint where members interacted with the program, interviewed customers about what mattered most, then designed a migration that felt invisible. People kept shopping, points kept working, and nobody called support asking where their account went.
+                            </p>
+                            <span class="read-more">Read case study →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="case-study" aria-labelledby="case2-heading">
+                    <a href="case-study-ticket-machines.html" class="case-study-link" aria-label="Read full case study: The Screen Wasn't the Problem">
+                        <div class="case-image" style="background-image: url('images/alsa-ticket-machines.jpg'); background-size: cover; background-position: center;" role="img" aria-label="ALSA ticket vending machines in a transit station"></div>
+                        <div class="case-content">
+                            <h3 id="case2-heading">The Screen Wasn't the Problem</h3>
+                            <p class="case-meta">
+                                <span class="case-type">Transit Ticketing · ALSA</span> · 
+                                <time datetime="2023">2023</time>
+                            </p>
+                            <p>
+                                ALSA redesigned their ticket machine screens and nothing changed. People still jammed credit cards into the cash slot because a poorly placed LED made it light up at the wrong time. Redesigning the whole machine wasn't realistic, so I focused on what we could control: making the physical affordances align with the digital interface. We repositioned lights, added clearer labels at decision points, and designed the screen flow to work with—not against—how rushed people actually behave. Fewer jammed machines, shorter lines, and staff stopped having to stand next to the kiosks explaining what to do.
+                            </p>
+                            <span class="read-more">Read case study →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="case-study" aria-labelledby="case3-heading">
+                    <a href="case-study-mental-models.html" class="case-study-link" aria-label="Read full case study: When the Metaphor Stops Working">
+                        <div class="case-image" style="background-image: url('images/mental-models.jpg'); background-size: cover; background-position: center;" role="img" aria-label="Armillary sphere representing mental models and metaphors"></div>
+                        <div class="case-content">
+                            <h3 id="case3-heading">When the Metaphor Stops Working</h3>
+                            <p class="case-meta">
+                                <span class="case-type">Enterprise Software Redesign</span> · 
+                                <time datetime="2023">2023</time>
+                            </p>
+                            <p>
+                                The software used a "filing cabinet" metaphor—folders, drawers, archives. It made sense in 2005. By 2023, new hires had never used a filing cabinet and couldn't figure out where anything was. I watched people search for documents they'd just created because "filing" them felt like putting them away forever. We didn't just redesign screens—we rebuilt the mental model around how people actually work now: streams, pins, and recent activity. Once the metaphor matched their reality, navigation became obvious. Support tickets about "lost files" dropped to nearly zero.
+                            </p>
+                            <span class="read-more">Read case study →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="case-study" aria-labelledby="case4-heading">
+                    <a href="case-study-onboarding.html" class="case-study-link" aria-label="Read full case study: First Days Shouldn't Feel Like Homework">
+                        <div class="case-image" style="background-image: url('images/zebra-island.jpg'); background-size: cover; background-position: center;" role="img" aria-label="Island landscape representing Zebra Island onboarding experience"></div>
+                        <div class="case-content">
+                            <h3 id="case4-heading">First Days Shouldn't Feel Like Homework</h3>
+                            <p class="case-meta">
+                                <span class="case-type">Employee Onboarding · Zebra Technologies</span> · 
+                                <time datetime="2023">2023</time>
+                            </p>
+                            <p>
+                                New hires at Zebra were quitting within weeks because onboarding felt like drowning in policy documents. HR teams across regions ran it differently, and nobody remembered anything they'd read. I talked to recent hires who described their first month as "lonely" and "overwhelming." We built Zebra Island—a 30-day experience where people learn by exploring, not reading. Information comes up when it's relevant, not all at once. New hires could connect with colleagues naturally while their calendar stayed structured but not suffocating. HR stopped chasing people to complete modules because they actually wanted to.
+                            </p>
+                            <span class="read-more">Read case study →</span>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Thoughts Section -->
+        <section id="thoughts" aria-labelledby="thoughts-heading">
+            <h2 id="thoughts-heading">Thinking Out Loud</h2>
+            
+            <article class="thought-item">
+                <h3>The Tyranny of Minimalism</h3>
+                <p class="date">
+                    <time datetime="2025-01">January 2025</time>
+                </p>
+                <p>
+                    Why stripping everything away isn't always the answer. Sometimes people need a little visual noise to feel at home.
+                </p>
+            </article>
+
+            <article class="thought-item">
+                <h3>Designing for Distraction</h3>
+                <p class="date">
+                    <time datetime="2024-12">December 2024</time>
+                </p>
+                <p>
+                    What happens when we accept that users aren't paying full attention? Designing for the corner of someone's eye.
+                </p>
+            </article>
+
+            <article class="thought-item">
+                <h3>The Button That Doesn't Look Like a Button</h3>
+                <p class="date">
+                    <time datetime="2024-11">November 2024</time>
+                </p>
+                <p>
+                    A love letter to skeuomorphism and an argument for bringing back some visual affordances.
+                </p>
+            </article>
+
+            <article class="thought-item">
+                <h3>Accessibility as Imagination</h3>
+                <p class="date">
+                    <time datetime="2024-10">October 2024</time>
+                </p>
+                <p>
+                    How designing for edge cases makes products better for everyone. Constraints breed creativity.
+                </p>
+            </article>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Let's talk</h2>
+            <nav class="contact-links" aria-label="Contact and social links">
+                <a href="mailto:hello@designer.com">hello@designer.com</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                    <span class="visually-hidden">(opens in new tab)</span>
+                </a>
+                <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer">
+                    Dribbble
+                    <span class="visually-hidden">(opens in new tab)</span>
+                </a>
+                <a href="https://read.cv" target="_blank" rel="noopener noreferrer">
+                    Read.cv
+                    <span class="visually-hidden">(opens in new tab)</span>
+                </a>
+            </nav>
+        </section>
+    </main>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.floating-cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.opacity = '0.5';
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.transform = `translate(${cursorX - 20}px, ${cursorY - 20}px)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Intersection Observer for sections
+        const sections = document.querySelectorAll('main > section');
+        const navLinks = document.querySelectorAll('header nav .nav-links a');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Update nav with proper ARIA
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                            link.setAttribute('aria-current', 'page');
+                        } else {
+                            link.classList.remove('active');
+                            link.removeAttribute('aria-current');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(section => observer.observe(section));
+
+        // Smooth scroll with focus management
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Set focus to the target section for keyboard users
+                    target.setAttribute('tabindex', '-1');
+                    target.focus();
+                    target.removeAttribute('tabindex');
+                }
+            });
+        });
+
+        // Scroll progress with ARIA updates
+        const scrollProgress = document.querySelector('.scroll-progress');
+        
+        window.addEventListener('scroll', () => {
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / totalHeight) * 100;
+            scrollProgress.style.width = progress + '%';
+            scrollProgress.setAttribute('aria-valuenow', Math.round(progress));
+        });
+
+        // Hover effects for case studies
+        document.querySelectorAll('.case-study').forEach(study => {
+            study.addEventListener('mouseenter', () => {
+                cursor.style.width = '80px';
+                cursor.style.height = '80px';
+                cursor.style.borderColor = 'var(--accent)';
+            });
+            
+            study.addEventListener('mouseleave', () => {
+                cursor.style.width = '40px';
+                cursor.style.height = '40px';
+                cursor.style.borderColor = 'var(--accent)';
+            });
+
+            // Make entire case study clickable
+            study.addEventListener('click', (e) => {
+                const link = study.querySelector('.case-study-link');
+                if (link && e.target !== link) {
+                    link.click();
+                }
+            });
+        });
+
+        // Keyboard navigation enhancement
+        document.addEventListener('keydown', (e) => {
+            // Allow escape to blur focused elements
+            if (e.key === 'Escape') {
+                document.activeElement.blur();
+            }
+        });
+    </script>
+</body>
+</html>
