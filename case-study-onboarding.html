@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Case study: Redesigning employee onboarding at Zebra Technologies to reduce early attrition and improve new hire experience">
+    <title>Zebra Island Onboarding - Case Study</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --text: #1a1a1a;
+            --bg: #fafafa;
+            --accent: #4a90e2;
+            --subtle: #e8e8e8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Skip link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            z-index: 10000;
+        }
+
+        .skip-to-main:focus {
+            top: 0;
+        }
+
+        *:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 2rem;
+            border-bottom: 1px solid var(--subtle);
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.6;
+        }
+
+        /* Hero */
+        .hero {
+            height: 60vh;
+            min-height: 400px;
+            background-image: url('images/zebra-island.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(250, 250, 250, 0.9) 100%);
+        }
+
+        /* Content */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .case-header {
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .meta {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid var(--subtle);
+            border-bottom: 1px solid var(--subtle);
+        }
+
+        .meta-item h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .meta-item p {
+            color: var(--text);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .highlight {
+            background: #fff;
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight p {
+            margin: 0;
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            color: #555;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .image-caption {
+            margin: 3rem 0;
+        }
+
+        .image-caption img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .caption {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 4rem;
+            padding: 1rem 2rem;
+            background: var(--text);
+            color: var(--bg);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 2rem 1.5rem;
+            }
+
+            .hero {
+                height: 40vh;
+                min-height: 300px;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+
+    <nav aria-label="Breadcrumb">
+        <a href="index.html">← Back to Portfolio</a>
+    </nav>
+
+    <div class="hero" role="img" aria-label="Island landscape representing the Zebra Island onboarding experience"></div>
+
+    <main id="main-content">
+        <article>
+            <header class="case-header">
+                <h1>First Days Shouldn't Feel Like Homework</h1>
+                <p class="meta">Employee Onboarding · Zebra Technologies · 2023</p>
+
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <h3>Role</h3>
+                        <p>User Research, UX Design, Content Strategy</p>
+                    </div>
+                    <div class="meta-item">
+                        <h3>Timeline</h3>
+                        <p>6 months</p>
+                    </div>
+                    <div class="meta-item">
+                        <h3>Team</h3>
+                        <p>3 designers, 2 developers, HR stakeholders</p>
+                    </div>
+                </div>
+            </header>
+
+            <section>
+                <h2>The Problem</h2>
+                <p>
+                    Zebra Technologies was losing new hires within their first 90 days. Exit interviews revealed a pattern: onboarding felt "overwhelming," "impersonal," and "lonely." HR teams across regions ran different processes, creating inconsistency. Nobody remembered what they'd learned from mandatory reading.
+                </p>
+
+                <div class="highlight">
+                    <p>
+                        "I spent my first week reading policy documents. By day three, I still didn't know where the bathroom was or who to ask questions."
+                    </p>
+                </div>
+
+                <p>
+                    The company needed a globally consistent onboarding experience that was less labor-intensive for HR teams and actually helped new hires feel welcomed and prepared—not buried in paperwork.
+                </p>
+            </section>
+
+            <section>
+                <h2>Research & Discovery</h2>
+                <p>
+                    I conducted interviews with recent hires across five regions and three departments. I also shadowed new employees during their first week and spoke with HR managers about their pain points.
+                </p>
+
+                <h3>What I Learned</h3>
+                <ul>
+                    <li><strong>Information overload was real</strong> - People were given 200+ pages to read in week one. Retention was near zero.</li>
+                    <li><strong>Social isolation was common</strong> - Remote and hybrid workers especially felt disconnected. They didn't know who to reach out to.</li>
+                    <li><strong>Timing was everything</strong> - People needed information just-in-time, not all at once. Trying to learn everything on day one was counterproductive.</li>
+                    <li><strong>Regional differences created confusion</strong> - Someone in the London office had a completely different experience than someone in Austin.</li>
+                    <li><strong>HR was overwhelmed</strong> - Managers spent hours manually walking people through processes, answering the same questions repeatedly.</li>
+                </ul>
+
+                <div class="highlight">
+                    <p>
+                        The insight: Onboarding wasn't a documentation problem. It was a human connection problem disguised as a documentation problem.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>The Solution: Zebra Island</h2>
+                <p>
+                    We created Zebra Island—a 30-day digital experience that reimagines onboarding as exploration rather than obligation. Instead of reading everything at once, new hires navigate an island metaphor where information appears when it's relevant.
+                </p>
+
+                <h3>How It Works</h3>
+                <p>
+                    Each new hire gets a personalized "island" that unfolds over their first 30 days. Information is revealed progressively:
+                </p>
+
+                <ul>
+                    <li><strong>Week 1: Landing</strong> - Basics like building access, team introductions, and first assignments. Light, welcoming, essential.</li>
+                    <li><strong>Week 2: Exploring</strong> - Department-specific information, meeting key collaborators, understanding workflows.</li>
+                    <li><strong>Week 3: Connecting</strong> - Company culture, cross-functional relationships, optional learning paths.</li>
+                    <li><strong>Week 4: Settling In</strong> - Performance expectations, growth opportunities, feedback mechanisms.</li>
+                </ul>
+
+                <h3>Key Features</h3>
+                <ul>
+                    <li><strong>Buddy system built-in</strong> - Every new hire is matched with a peer mentor. The platform facilitates introductions and suggests conversation starters.</li>
+                    <li><strong>Just-in-time content</strong> - Information appears when you need it, not all at once. Day 3 content unlocks on day 3.</li>
+                    <li><strong>Interactive, not passive</strong> - Tasks feel like missions, not checklists. Complete a "quest" to learn about benefits enrollment.</li>
+                    <li><strong>Flexible pacing</strong> - Core content is required, but people can explore at their own speed. No one feels rushed or bored.</li>
+                    <li><strong>Global consistency with local flavor</strong> - Same structure everywhere, but localized for regional differences (language, policies, customs).</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Design Process</h2>
+                
+                <h3>Concept & Metaphor</h3>
+                <p>
+                    The "island" metaphor was intentional. Islands represent:
+                </p>
+                <ul>
+                    <li>Discovery and exploration (not mandatory reading)</li>
+                    <li>Safe territory to navigate at your own pace</li>
+                    <li>A journey with a clear destination</li>
+                    <li>Something memorable and distinct from typical corporate training</li>
+                </ul>
+
+                <h3>Information Architecture</h3>
+                <p>
+                    I mapped out what information new hires actually needed, when they needed it, and how it connected. The result was a progressive disclosure system that prioritized:
+                </p>
+                <ol>
+                    <li>What you need to function (day 1-3)</li>
+                    <li>What you need to contribute (week 1-2)</li>
+                    <li>What you need to grow (week 2-4)</li>
+                    <li>What you might want to explore (ongoing)</li>
+                </ol>
+
+                <h3>Testing & Iteration</h3>
+                <p>
+                    We piloted Zebra Island with 50 new hires across three regions. I conducted weekly check-ins and exit surveys. Based on feedback, we:
+                </p>
+                <ul>
+                    <li>Reduced text-heavy content by 60%</li>
+                    <li>Added more visual wayfinding</li>
+                    <li>Made buddy connections happen earlier (day 1 instead of week 2)</li>
+                    <li>Created optional "deep dive" paths for people who wanted more detail</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Impact</h2>
+                
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="stat-number">45%</div>
+                        <div class="stat-label">Reduction in 90-day attrition</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">92%</div>
+                        <div class="stat-label">Completion rate (vs. 34% before)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">8.7/10</div>
+                        <div class="stat-label">Average satisfaction score</div>
+                    </div>
+                </div>
+
+                <h3>Qualitative Feedback</h3>
+                <div class="highlight">
+                    <p>
+                        "For the first time, I didn't feel like I was drowning in information. Everything came when I needed it."
+                    </p>
+                </div>
+
+                <div class="highlight">
+                    <p>
+                        "My buddy made all the difference. I had someone to ask 'stupid questions' without feeling judged."
+                    </p>
+                </div>
+
+                <h3>Organizational Impact</h3>
+                <ul>
+                    <li>HR teams reduced onboarding workload by 60%</li>
+                    <li>Consistent experience across all regions and departments</li>
+                    <li>New hires felt connected to the company culture faster</li>
+                    <li>Platform became a model for other internal training programs</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>What I Learned</h2>
+                <p>
+                    This project taught me that the best solutions often come from reframing the problem. Zebra thought they had a content problem—too much information scattered across too many documents. But the real problem was that new hires felt isolated and overwhelmed.
+                </p>
+
+                <p>
+                    By focusing on the emotional experience of starting a new job, we created something that felt less like mandatory training and more like a warm welcome. The island metaphor made the whole experience memorable and gave people a sense of progression rather than just completion.
+                </p>
+
+                <p>
+                    The biggest surprise? HR initially resisted the "gamification" aspect, worried it wouldn't be taken seriously. But new hires loved it precisely because it didn't take itself too seriously. Sometimes professionalism means making things human, not making them heavy.
+                </p>
+            </section>
+
+            <section>
+                <h2>Reflection</h2>
+                <p>
+                    If I were doing this again, I'd spend more time on the buddy matching algorithm. We did basic matching (department + seniority), but there's potential for more sophisticated pairing based on interests, working styles, and career goals.
+                </p>
+
+                <p>
+                    I'd also love to extend the experience beyond 30 days. The feedback showed people wanted ongoing learning paths, not just onboarding. The foundation is there—it's a natural next step.
+                </p>
+            </section>
+
+            <a href="index.html#work" class="back-link">← Back to All Work</a>
+        </article>
+    </main>
+</body>
+</html>
