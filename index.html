@@ -670,8 +670,8 @@
                     }
                 });
             }, { 
-                threshold: 0.3, // Lowered from 0.3 for better mobile detection
-                rootMargin: '0px 0px -100px 0px' // Trigger slightly before element is fully in view
+                threshold: 0.1, // Lowered from 0.3 for better mobile detection
+                rootMargin: '0px 0px -50px 0px' // Trigger slightly before element is fully in view
             });
 
             sections.forEach(section => observer.observe(section));
