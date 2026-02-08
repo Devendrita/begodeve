@@ -640,27 +640,46 @@
         const sections = document.querySelectorAll('main > section');
         const navLinks = document.querySelectorAll('header nav .nav-links a');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    // Update nav with proper ARIA
-                    const id = entry.target.id;
-                    navLinks.forEach(link => {
-                        if (link.getAttribute('href') === `#${id}`) {
-                            link.classList.add('active');
-                            link.setAttribute('aria-current', 'page');
-                        } else {
-                            link.classList.remove('active');
-                            link.removeAttribute('aria-current');
-                        }
-                    });
+        // Fallback: Make all sections visible after 1 second if observer doesn't work
+        const fallbackTimer = setTimeout(() => {
+            sections.forEach(section => {
+                if (!section.classList.contains('visible')) {
+                    section.classList.add('visible');
                 }
             });
-        }, { threshold: 0.3 });
+        }, 1000);
 
-        sections.forEach(section => observer.observe(section));
+        // Check if IntersectionObserver is supported
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Update nav with proper ARIA
+                        const id = entry.target.id;
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                                link.setAttribute('aria-current', 'page');
+                            } else {
+                                link.classList.remove('active');
+                                link.removeAttribute('aria-current');
+                            }
+                        });
+                    }
+                });
+            }, { 
+                threshold: 0.1, // Lowered from 0.3 for better mobile detection
+                rootMargin: '0px 0px -50px 0px' // Trigger slightly before element is fully in view
+            });
+
+            sections.forEach(section => observer.observe(section));
+        } else {
+            // If IntersectionObserver not supported, show all sections immediately
+            sections.forEach(section => section.classList.add('visible'));
+            clearTimeout(fallbackTimer);
+        }
 
         // Smooth scroll with focus management
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
