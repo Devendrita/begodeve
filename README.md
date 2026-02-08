@@ -23,7 +23,7 @@ portfolio/
 │   ├── loyalty-screens.jpg
 │   ├── alsa-ticket-machines.jpg
 │   ├── mental-models.jpg
-│   ├── zebra-island.jpg
+│   ├── perfect-onboarding.jpg
 │   └── about-image.jpg
 ├── css/                    # (Optional) External stylesheets
 ├── js/                     # (Optional) External JavaScript
